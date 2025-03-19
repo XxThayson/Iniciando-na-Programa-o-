@@ -1,0 +1,60 @@
+import datetime
+
+# Função para salvar compromissos
+def salvar_agenda(evento, data):
+    with open("agenda.txt", "a") as file:
+        file.write(f"{evento} - {data}\n")
+    print("Compromisso adicionado com sucesso!")
+
+# Função para listar compromissos
+def listar_agenda():
+    try:
+        with open("agenda.txt", "r") as file:
+            compromissos = file.readlines()
+        if compromissos:
+            print("\nAgenda de compromissos:")
+            for compromisso in compromissos:
+                print(compromisso.strip())
+        else:
+            print("Nenhum compromisso agendado.")
+    except FileNotFoundError:
+        print("Agenda vazia.")
+
+# Função para o chatbot
+def chatbot():
+    print("Olá! Eu sou o seu assistente virtual.")
+    while True:
+        print("\nEscolha uma opção:")
+        print("1. Perguntar algo")
+        print("2. Agendar um compromisso")
+        print("3. Ver agenda")
+        print("4. Sair")
+        
+        opcao = input("Digite o número da opção: ")
+
+        if opcao == "1":
+            pergunta = input("O que você quer perguntar? ")
+            print(f"Você perguntou: {pergunta}. Não sei a resposta, mas posso te ajudar com outras coisas!")
+
+        elif opcao == "2":
+            evento = input("O que você quer agendar? ")
+            data = input("Qual a data do compromisso? (Ex: 2025-03-20) ")
+            try:
+                # Verificando se a data é válida
+                datetime.datetime.strptime(data, "%Y-%m-%d")
+                salvar_agenda(evento, data)
+            except ValueError:
+                print("Data inválida. Por favor, use o formato YYYY-MM-DD.")
+
+        elif opcao == "3":
+            listar_agenda()
+
+        elif opcao == "4":
+            print("Saindo... até logo!")
+            break
+
+        else:
+            print("Opção inválida. Tente novamente.")
+
+# Inicia o chatbot
+chatbot()
